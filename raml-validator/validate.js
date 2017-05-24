@@ -7,6 +7,15 @@ const path = require('path')
 const yargs = require('yargs')
 const fs = require('fs')
 
+// TODO: Temporal solution for submodules
+const exec = require('child_process').exec
+
+exec('git submodule update --init --recursive', function (error) {
+  if (error !== null) {
+    console.log('exec error: ' + error)
+  }
+})
+
 const argv = yargs
     .usage('Usage:\n  validate.js </path/to/raml> [options]')
 
