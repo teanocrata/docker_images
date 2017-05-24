@@ -1,0 +1,24 @@
+{
+  "name": "raml-basic-validator",
+  "version": "0.1.0",
+  "description": "RAML basic validation",
+  "bin": {
+    "raml-basic-validate": "validate.js"
+  },
+  "main": "validate.js",
+  "scripts": {
+    "validate": "node validate.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "ssh://git@globaldevtools.bbva.com:7999/bpc/technical-team-demo.git"
+  },
+  "author": "Isabel Muñoz",
+  "license": "MIT",
+  "dependencies": {
+    "fs": "0.0.1-security",
+    "path": "^0.12.7",
+    "raml-1-parser": "^1.1.21",
+    "yargs": "^8.0.1"
+  }
+}
