@@ -7,6 +7,7 @@ WORKDIR /home/node/raml-validator
 
 RUN npm install -g
 
-WORKDIR /
+RUN mkdir /home/code
+WORKDIR /home/code
 
-CMD [ "node" ]
+CMD [ "raml-basic-validate" ]
