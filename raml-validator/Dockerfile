@@ -1,5 +1,5 @@
 # Base docker image
-FROM node:7-alpine
+FROM node:7
 
 RUN mkdir /home/node/raml-validator
 ADD . /home/node/raml-validator
