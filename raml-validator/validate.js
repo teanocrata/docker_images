@@ -16,24 +16,11 @@ const argv = yargs
     .example('validate definition.raml')
     .argv
 
-  // TODO: Temporal solution for submodules
-const exec = require('child_process').exec
-
-exec('git submodule update --init --recursive', function (error) {
-  if (error !== null) {
-    console.log('exec error: ' + error)
-  } else {
-    console.log('Updated git submodules')
-  }
-
-  if (argv._.length === 1) {
-    validate(argv._[0])
-  } else {
-    recursiveValidation('./')
-  }
-
-  console.log('RAML parsing success.')
-})
+if (argv._.length === 1) {
+  validate(argv._[0])
+} else {
+  recursiveValidation('./')
+}
 
 function validate (file) {
   const fileName = path.resolve(process.cwd(), file)
