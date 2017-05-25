@@ -16,9 +16,10 @@
   "author": "Isabel Muñoz",
   "license": "MIT",
   "dependencies": {
+    "@grapi/raml-typescript-validator": "file:grapi-raml-typescript-validator-1.0.0.tgz",
+    "exec": "^0.2.1",
     "fs": "0.0.1-security",
     "path": "^0.12.7",
-    "raml-1-parser": "^1.1.21",
     "yargs": "^8.0.1"
   }
 }

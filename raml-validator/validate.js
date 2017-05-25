@@ -2,10 +2,10 @@
 
 'use strict'
 
-const raml = require('raml-1-parser')
 const path = require('path')
 const yargs = require('yargs')
 const fs = require('fs')
+const childProcess = require('child_process')
 
 const argv = yargs
     .usage('Usage:\n  validate.js </path/to/raml> [options]')
@@ -16,22 +16,27 @@ const argv = yargs
     .example('validate definition.raml')
     .argv
 
+let errors = false
+
 if (argv._.length === 1) {
   validate(argv._[0])
 } else {
   recursiveValidation('./')
 }
 
+if (errors) {
+  console.log('Ooooops: there are errors at RAML files')
+  process.exit(1)
+}
+
 function validate (file) {
   const fileName = path.resolve(process.cwd(), file)
 
+  var executable = 'node node_modules/@grapi/raml-typescript-validator/dist/index.js -r ' + fileName
   try {
-    raml.loadApiSync(fileName, {rejectOnErrors: true})
-  } catch (err) {
-    err.parserErrors.forEach((parserError) => {
-      console.log('Parsing error: ' + parserError.message)
-    })
-    throw err.message
+    childProcess.execSync(executable)
+  } catch (e) {
+    errors = true
   }
 }
 
