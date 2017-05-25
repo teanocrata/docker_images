@@ -32,7 +32,7 @@ if (errors) {
 function validate (file) {
   const fileName = path.resolve(process.cwd(), file)
 
-  var executable = 'node node_modules/@grapi/raml-typescript-validator/dist/index.js -r ' + fileName
+  var executable = 'node /usr/local/lib/node_modules/raml-basic-validator/node_modules/@grapi/raml-typescript-validator/dist/index.js -r ' + fileName
   try {
     childProcess.execSync(executable)
   } catch (e) {
