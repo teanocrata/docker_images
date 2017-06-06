@@ -6,13 +6,10 @@ const path = require('path')
 const yargs = require('yargs')
 const fs = require('fs')
 const childProcess = require('child_process')
-const slack = require('simple-slack-webhook')
+const Slack = require('slack-node')
 
-slack.init({
-  path: 'https://hooks.slack.com/services/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',
-  username: 'GLAPI bot',
-  channel: '#test'
-})
+let slack = new Slack()
+slack.setWebhook('https://hooks.slack.com/services/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')
 
 const argv = yargs
     .usage('Usage:\n  validate.js </path/to/raml> [options]')
@@ -23,7 +20,7 @@ const argv = yargs
     .example('validate definition.raml')
     .argv
 
-let errors = false
+const errors = []
 
 if (argv._.length === 1) {
   validate(argv._[0])
@@ -31,20 +28,20 @@ if (argv._.length === 1) {
   recursiveValidation('./')
 }
 
-if (errors) {
-  console.log('Ooooops: there are errors at RAML files')
-  var attachments = [{
-    'fallback': 'New validation on a GLAPI repository fails',
-    'title': 'GLAPI repository validation',
-    'title_link': 'https://globaldevtools.bbva.com/jenkins/blue/pipelines',
-    'text': 'Help! I tried to desings an API but something went wrong!',
-    'color': '#f70202'
-  }]
-  slack.attachments(attachments)
-  process.exit(1)
-} else {
-  slack.text('New validation on a GLAPI repository done')
-}
+slack.webhook({
+  channel: '@teanocrata',
+  username: 'webhookbot',
+  icon_emoji: errors.length > 0 ? ':poop:' : ':ghost:',
+  text: 'New validation on a GLAPI repository: ' + getSlackMessage(errors)
+}, function (err, response) {
+  if (err) {
+    console.log(err)
+  }
+  if (errors.length > 0) {
+    console.log('Ooooops: there are errors at RAML files')
+    process.exit(1)
+  }
+})
 
 function validate (file) {
   const fileName = path.resolve(process.cwd(), file)
@@ -53,7 +50,7 @@ function validate (file) {
   try {
     childProcess.execSync(executable)
   } catch (e) {
-    errors = true
+    errors.push(e)
   }
 }
 
@@ -69,4 +66,9 @@ function recursiveValidation (dir) {
       }
     }
   })
+}
+
+function getSlackMessage (errors) {
+  const message = errors.reduce((comp, error) => comp + error.message, '')
+  return message === '' ? 'OK' : message
 }

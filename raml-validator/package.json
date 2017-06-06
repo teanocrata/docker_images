@@ -21,6 +21,7 @@
     "fs": "0.0.1-security",
     "path": "^0.12.7",
     "simple-slack-webhook": "0.0.5",
+    "slack-node": "^0.1.8",
     "yargs": "^8.0.1"
   }
 }
