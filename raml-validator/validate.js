@@ -6,6 +6,13 @@ const path = require('path')
 const yargs = require('yargs')
 const fs = require('fs')
 const childProcess = require('child_process')
+const slack = require('simple-slack-webhook')
+
+slack.init({
+  path: 'https://hooks.slack.com/services/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',
+  username: 'GLAPI bot',
+  channel: '#test'
+})
 
 const argv = yargs
     .usage('Usage:\n  validate.js </path/to/raml> [options]')
@@ -26,7 +33,17 @@ if (argv._.length === 1) {
 
 if (errors) {
   console.log('Ooooops: there are errors at RAML files')
+  var attachments = [{
+    'fallback': 'New validation on a GLAPI repository fails',
+    'title': 'GLAPI repository validation',
+    'title_link': 'https://globaldevtools.bbva.com/jenkins/blue/pipelines',
+    'text': 'Help! I tried to desings an API but something went wrong!',
+    'color': '#f70202'
+  }]
+  slack.attachments(attachments)
   process.exit(1)
+} else {
+  slack.text('New validation on a GLAPI repository done')
 }
 
 function validate (file) {

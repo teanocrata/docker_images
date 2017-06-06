@@ -20,6 +20,7 @@
     "exec": "^0.2.1",
     "fs": "0.0.1-security",
     "path": "^0.12.7",
+    "simple-slack-webhook": "0.0.5",
     "yargs": "^8.0.1"
   }
 }
