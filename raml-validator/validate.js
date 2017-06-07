@@ -9,7 +9,7 @@ const childProcess = require('child_process')
 const Slack = require('slack-node')
 
 let slack = new Slack()
-slack.setWebhook('https://hooks.slack.com/services/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')
+slack.setWebhook('https://hooks.slack.com/services/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')
 
 const argv = yargs
     .usage('Usage:\n  validate.js </path/to/raml> [options]')
@@ -29,8 +29,8 @@ if (argv._.length === 1) {
 }
 
 slack.webhook({
-  channel: '@teanocrata',
-  username: 'webhookbot',
+  channel: '#development',
+  username: 'raml-typescript-validator-bot',
   icon_emoji: errors.length > 0 ? ':poop:' : ':ghost:',
   text: 'New validation on a GLAPI repository: ' + getSlackMessage(errors)
 }, function (err, response) {
